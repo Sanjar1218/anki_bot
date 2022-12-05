@@ -23,10 +23,14 @@ def start():
     nom.insert({})
 
 
-def lst_add(name):
-    path = lst_table.get(doc_id=1)
-    path[name] = {}
-    lst_table.update(path)
+def lst_add(id, name):
+    path = lst_table.get(where('id') == id)
+
+    if path:
+        path[name] = {}
+        lst_table.update(path, where('id') == id)
+    else:
+        lst_table.insert({'id': id, name: {}})
 
 
 def dct(name):
@@ -179,11 +183,11 @@ def search_dek(name):
     return path[name]
 
 
-def change_dek(name, d):
+def change_dek(id, d):
     '''User qaysi dekga kirganini saqlab qoladi'''
-    path = dek.get(doc_id=1)
-    path[name] = d
-    dek.update(path)
+    path = dek.get(where('id') == id)
+    path['dek_name'] = d
+    dek.update(path, where('id') == id)
 
 
 def deck_id_quest(x, first_name, name='ajoyib'):
@@ -256,7 +260,7 @@ def add_user(id: int, user_name: str) -> None:
         d['index'] = 1
         path['index'] = 1
     else:
-        d = {'id': id, 'index': 1, 'username': user_name}
+        d = {'id': id, 'index': 1}
         path = {'id': id, 'index': 1, 'username': user_name}
         user.insert(path)
         dek.insert(d)
