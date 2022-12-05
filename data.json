@@ -1,29 +1,16 @@
 {
-    "Anki": {
-        "1": {}
-    },
-    "Anki_ans": {
-        "1": {}
-    },
     "user": {
         "1": {
-            "id": 1,
-            "index": 1
+            "id": 555351863,
+            "index": 1,
+            "username": "SANJARBEK1718"
         }
     },
     "Dek": {
         "1": {
-            "id": 1,
-            "index": 1
+            "id": 555351863,
+            "index": 1,
+            "username": "SANJARBEK1718"
         }
-    },
-    "Time": {
-        "1": {}
-    },
-    "List": {
-        "1": {}
-    },
-    "Nomer": {
-        "1": {}
     }
 }

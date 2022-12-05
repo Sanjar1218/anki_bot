@@ -238,7 +238,7 @@ def ans(answer, first_name, name='Decks'):
     anki_ans.update(dct)
 
 
-def add_user(id):
+def add_user(id: int, user_name: str) -> None:
     '''yangi user qo'shadi agar oldindan bo'lsa olindigi qolib ketgan historyni yangilaydi'''
 
     d = user.get(query.id == id)
@@ -252,9 +252,14 @@ def add_user(id):
 
     # user.update(your_operation('index'), query.id == id)
     # dek.update(your_operation('index'), query.id == id)
-
-    d['index'] = 1
-    path['index'] = 1
+    if d and path:
+        d['index'] = 1
+        path['index'] = 1
+    else:
+        d = {'id': id, 'index': 1, 'username': user_name}
+        path = {'id': id, 'index': 1, 'username': user_name}
+        user.insert(path)
+        dek.insert(d)
     user.update(path, where('id') == id)
     dek.update(d, where('id') == id)
 
@@ -267,5 +272,5 @@ def change_user(name, x):
 
 
 if __name__ == '__main__':
-    # start()
-    add_user(1)
+    start()
+    # add_user(1)
