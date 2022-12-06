@@ -3,14 +3,44 @@
         "1": {
             "id": 555351863,
             "index": 1,
-            "username": "SANJARBEK1718"
+            "username": "SANJARBEK1718",
+            "dek_name": "asdf"
         }
     },
     "Dek": {
         "1": {
             "id": 555351863,
             "index": 1,
-            "dek_name": "change"
+            "dek_name": "qwer",
+            "username": "SANJARBEK1718"
+        }
+    },
+    "List": {
+        "1": {
+            "id": 555351863,
+            "Sanjarbek": {}
+        }
+    },
+    "Anki": {
+        "1": {
+            "name": "asdf",
+            "data": {}
+        },
+        "2": {
+            "name": "qwer",
+            "user_id": 555351863,
+            "data": {}
+        }
+    },
+    "Anki_ans": {
+        "1": {
+            "name": "asdf",
+            "data": {}
+        },
+        "2": {
+            "name": "qwer",
+            "user_id": 555351863,
+            "data": {}
         }
     }
 }

@@ -177,17 +177,24 @@ def search_user(name):
     return path[name]
 
 
-def search_dek(name):
+def search_dek(id):
     '''user qaysi dekda ekanligini qaytaradi'''
-    path = dek.get(doc_id=1)
-    return path[name]
+    path = dek.get(where('user_id') == id)
+
+    if path:
+        return path['deck_name']
+    else:
+        return 'user doesnt exists'
 
 
 def change_dek(id, d):
     '''User qaysi dekga kirganini saqlab qoladi'''
     path = dek.get(where('id') == id)
-    path['dek_name'] = d
-    dek.update(path, where('id') == id)
+    if path:
+        path['dek_name'] = d
+        dek.update(path, where('id') == id)
+    else:
+        return 'id doenst exists'
 
 
 def deck_id_quest(x, first_name, name='ajoyib'):
@@ -215,14 +222,15 @@ def create_decks(id, deck_name, first_name):
         anki_ans.insert({'name': deck_name, 'user_id': id, 'data': {}})
 
 
-def quest(question, first_name, name='Decks'):
+def quest(question, id, name='Decks'):
     '''user ning qaysi dekda ekanligiga qarab shu dek savollarni qo'shadi'''
-    dct = anki.get(doc_id=1)
-    path = dct[first_name][name]
-    last = len(path)
-    last += 1
-    path[str(last)] = {'question': question}
-    dct[first_name][name] = path
+    dct = anki.get(where('dekc_name') == name)
+
+    # path = dct[first_name][name]
+    # last = len(path)
+    # last += 1
+    # path[str(last)] = {'question': question}
+    # dct[first_name][name] = path
     anki.update(dct)
 
 
