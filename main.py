@@ -80,7 +80,9 @@ def choose_deck(update, context):
     bot = context.bot
     chat_id = update.message.chat.id
     text = update.message.text
-    change_dek(first, text)
+
+    print(change_dek(chat_id, text))
+
     button = ReplyKeyboardMarkup([['Read', 'Add to deck'], ['Exit']],
                                  resize_keyboard=True)
     bot.sendMessage(chat_id, 'Now begin to add word', reply_markup=button)
@@ -114,17 +116,6 @@ def deck_name(update, context):
 
     update.message.reply_text('Done, you can add now')
     return 'END'
-
-
-def add(update, context):
-    bot = context.bot
-    first = update.message.chat.first_name
-    chat_id = update.message.chat.id
-    # search_user(first)
-    button = ReplyKeyboardMarkup([['Question', 'Answer'], ['Exit']],
-                                 resize_keyboard=True)
-    bot.sendMessage(chat_id, 'test', reply_markup=button)
-    return 'QUESTION'
 
 
 def my_deck(update, context):
@@ -252,11 +243,13 @@ def hide(update, context):
 
 def begin(update, context):
     first = update.message.chat.first_name
+
     change_user(first, 1)
     name = search_dek(first)
     lst_up(first, name, 1)
     x = search_user(first)
     text = deck_id_quest(x, first, name)
+
     button = InlineKeyboardButton('Show answer', callback_data='show_answer')
     button2 = InlineKeyboardButton('Exit', callback_data='Exit')
     reply_markup = InlineKeyboardMarkup([[button, button2]],
@@ -355,6 +348,18 @@ def day(update, context):
         update.edit_message_text(text, reply_markup=button)
 
 
+def add(update, context):
+    bot = context.bot
+    first = update.message.chat.first_name
+    chat_id = update.message.chat.id
+
+    # search_user(first)
+    button = ReplyKeyboardMarkup([['Question', 'Answer'], ['Exit']],
+                                 resize_keyboard=True)
+    bot.sendMessage(chat_id, 'test', reply_markup=button)
+    return 'QUESTION'
+
+
 def question(update, context):
     update.message.reply_text('Type question')
     return 'TEXT'
@@ -367,8 +372,11 @@ def answer(update, context):
 
 def text(update, context):
     first = update.message.chat.first_name
-    path = search_dek(first)
-    quest(update.message.text, first, path)
+    chat_id = update.message.chat.id
+
+    path = search_dek(chat_id)
+    quest(update.message.text, chat_id, path)
+
     update.message.reply_text('push answer button to answer')
     return 'ANSWER'
 
