@@ -162,12 +162,12 @@ def pop_time(year, month, day, hour, minute):
     time.update(path)
 
 
-def user_decks(first_name):
+def user_decks(id):
     '''userning deklarini list qilib qaytaradi'''
     lst = []
-    dct = anki.get(doc_id=1)[first_name].keys()
+    dct = anki.search(where('user_id') == id)
     for i in dct:
-        lst.append(i)
+        lst.append(i['name'])
     return lst
 
 
@@ -209,10 +209,10 @@ def create_decks(id, deck_name, first_name):
     answer = anki_ans.get(where('name') == deck_name)
 
     if question and answer:
-        anki.insert({'name': deck_name, 'data': {}})
-        anki_ans.insert({'name': deck_name, 'data': {}})
-    else:
         return False
+    else:
+        anki.insert({'name': deck_name, 'user_id': id, 'data': {}})
+        anki_ans.insert({'name': deck_name, 'user_id': id, 'data': {}})
 
 
 def quest(question, first_name, name='Decks'):
