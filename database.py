@@ -202,22 +202,17 @@ def deck_id_ans(x, first_name, name='ajoyib'):
     return ds
 
 
-def create_decks(deck_name, first_name):
+def create_decks(id, deck_name, first_name):
     '''yangi dek document qo'shadi va agar shu nomli dek bo'lsa qo'shmay false qaytardi '''
 
-    first = anki.get(doc_id=1)
-    last = anki_ans.get(doc_id=1)
-    if first_name not in first:
-        first[first_name] = {}
-        last[first_name] = {}
-    bir = first[first_name]
-    bir[deck_name] = {}
-    first[first_name] = bir
-    ikki = last[first_name]
-    ikki[deck_name] = {}
-    last[first_name] = ikki
-    anki.update(first)
-    anki_ans.update(last)
+    question = anki.get(where('name') == deck_name)
+    answer = anki_ans.get(where('name') == deck_name)
+
+    if question and answer:
+        anki.insert({'name': deck_name, 'data': {}})
+        anki_ans.insert({'name': deck_name, 'data': {}})
+    else:
+        return False
 
 
 def quest(question, first_name, name='Decks'):
