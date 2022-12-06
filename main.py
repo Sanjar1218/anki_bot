@@ -18,7 +18,9 @@ def my_decks(update, context):
     first = update.message.chat.first_name
     bot = context.bot
     chat_id = update.message.chat.id
-    text = user_decks(first)
+
+    text = user_decks(chat_id)
+
     if len(text) == 1:
         button = KeyboardButton(str(text[0]))
         reply_markup = ReplyKeyboardMarkup([[button, 'Exit']],
@@ -102,12 +104,14 @@ def deck_name(update, context):
 
     change_dek(chat_id, text)
     lst_add(chat_id, first)
-    create_decks(text, first)
+    create_decks(chat_id, text, first)
+
     if text == 'Close':
         button = ReplyKeyboardMarkup([['Create deck', 'My Decks']],
                                      resize_keyboard=True)
         bot.sendMessage(chat_id, 'test', reply_markup=button)
         return ConversationHandler.END
+
     update.message.reply_text('Done, you can add now')
     return 'END'
 
