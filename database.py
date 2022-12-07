@@ -197,9 +197,9 @@ def change_dek(id, d):
         return 'id doenst exists'
 
 
-def deck_id_quest(x, first_name, name='ajoyib'):
+def deck_id_quest(x, name='ajoyib'):
     '''Returns word'''
-    ds = anki.get(doc_id=1)[first_name][name][str(x)]['question']
+    ds = anki.get(where('name') == name)['data'][x]
     return ds
 
 
@@ -276,11 +276,13 @@ def add_user(id: int, user_name: str) -> None:
     dek.update(d, where('id') == id)
 
 
-def change_user(name, x):
+def change_user(id, index):
     '''userni indexi yangilab turadi'''
-    path = user.get(doc_id=1)
-    path[name] = x
-    user.update(path)
+
+    path = user.get(where('id') == id)
+    path['index'] = index
+
+    user.update(path, where('id') == id)
 
 
 if __name__ == '__main__':
