@@ -4,7 +4,7 @@
             "id": 555351863,
             "index": 1,
             "username": "SANJARBEK1718",
-            "dek_name": "asdf"
+            "dek_name": "qwer"
         }
     },
     "Dek": {
@@ -29,7 +29,12 @@
         "2": {
             "name": "qwer",
             "user_id": 555351863,
-            "data": {}
+            "data": {
+                "1": "hi",
+                "2": "good",
+                "3": "asdf",
+                "4": "/cancel"
+            }
         }
     },
     "Anki_ans": {
@@ -40,7 +45,12 @@
         "2": {
             "name": "qwer",
             "user_id": 555351863,
-            "data": {}
+            "data": {
+                "1": "hello",
+                "2": "yaxshi",
+                "3": "fdsa",
+                "4": "/bekor"
+            }
         }
     }
 }
