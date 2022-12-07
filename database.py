@@ -222,27 +222,32 @@ def create_decks(id, deck_name, first_name):
         anki_ans.insert({'name': deck_name, 'user_id': id, 'data': {}})
 
 
-def quest(question, id, name='Decks'):
+def quest(question, name='Decks'):
     '''user ning qaysi dekda ekanligiga qarab shu dek savollarni qo'shadi'''
-    dct = anki.get(where('dekc_name') == name)
+    # getting deck accordingly
+    quest = anki.get(where('name') == name)
 
-    # path = dct[first_name][name]
-    # last = len(path)
-    # last += 1
-    # path[str(last)] = {'question': question}
-    # dct[first_name][name] = path
-    anki.update(dct)
+    try:
+        id = int(list(quest['data'].keys())[-1])
+    except IndexError:
+        id = 0
+
+    quest['data'][id + 1] = question
+    anki.update(quest, where('name') == name)
 
 
-def ans(answer, first_name, name='Decks'):
+def ans(answer, name='Decks'):
     '''userning qaysi dekdagi nominiga qarab shunga javoblarini qo'shib ketadi'''
-    dct = anki_ans.get(doc_id=1)
-    path = dct[first_name][name]
-    last = len(path)
-    last += 1
-    path[str(last)] = {'answer': answer}
-    dct[first_name][name] = path
-    anki_ans.update(dct)
+    # getting deck accordingly
+    ans = anki.get(where('name') == name)
+
+    try:
+        id = int(list(quest['data'].keys())[-1])
+    except IndexError:
+        id = 0
+
+    ans['data'][id + 1] = answer
+    anki_ans.update(quest, where('name') == name)
 
 
 def add_user(id: int, user_name: str) -> None:
@@ -279,5 +284,12 @@ def change_user(name, x):
 
 
 if __name__ == '__main__':
-    start()
+    # start()
     # add_user(1)
+    quest = anki.get(where('name') == 'qwer')
+    try:
+        id = int(list(quest['data'].keys())[-1])
+    except IndexError:
+        id = 0
+    quest['data'][id + 1] = 'bye'
+    anki.update(quest, where('name') == 'qwer')
