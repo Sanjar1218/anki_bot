@@ -350,43 +350,39 @@ def day(update, context):
 
 def add(update, context):
     bot = context.bot
-    first = update.message.chat.first_name
     chat_id = update.message.chat.id
 
     # search_user(first)
-    button = ReplyKeyboardMarkup([['Question', 'Answer'], ['Exit']],
-                                 resize_keyboard=True)
-    bot.sendMessage(chat_id, 'test', reply_markup=button)
+    button = ReplyKeyboardMarkup([['Close']], resize_keyboard=True)
+    bot.sendMessage(chat_id, 'type question', reply_markup=button)
     return 'QUESTION'
 
 
 def question(update, context):
-    update.message.reply_text('Type question')
-    return 'TEXT'
-
-
-def answer(update, context):
-    update.message.reply_text('Type answer')
-    return 'TEXT2'
-
-
-def text(update, context):
-    first = update.message.chat.first_name
     chat_id = update.message.chat.id
+    text = update.message.text
+
+    if text == 'Close':
+        return close(update, context)
 
     path = search_dek(chat_id)
-    quest(update.message.text, chat_id, path)
+    quest(text, path)
 
-    update.message.reply_text('push answer button to answer')
+    update.message.reply_text('Type answer')
     return 'ANSWER'
 
 
-def text2(update, context):
-    first = update.message.chat.first_name
-    path = search_dek(first)
+def answer(update, context):
+    chat_id = update.message.chat.id
     text = update.message.text
-    ans(text, first, path)
-    update.message.reply_text('just push the qustion button')
+
+    if text == 'Close':
+        return close(update, context)
+
+    path = search_dek(chat_id)
+    ans(text, path)
+
+    update.message.reply_text('Type question')
     return 'QUESTION'
 
 
@@ -431,11 +427,8 @@ updater.dispatcher.add_handler(
 conv_handler = ConversationHandler(
     entry_points=[MessageHandler(Filters.text('Add to deck'), add)],
     states={
-        'QUESTION': [MessageHandler(Filters.text('Question'), question)],
-        'TEXT': [MessageHandler(Filters.text, text)],
-        'TEXT2': [MessageHandler(Filters.text, text2)],
-        'ANSWER': [MessageHandler(Filters.text, answer)],
-        'END': [MessageHandler(Filters.text('Close'), close)]
+        'QUESTION': [MessageHandler(Filters.text, question)],
+        'ANSWER': [MessageHandler(Filters.text, answer)]
     },
     fallbacks=[CommandHandler('cancel', cancel)],
     allow_reentry=True)
