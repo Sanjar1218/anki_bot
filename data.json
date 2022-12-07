@@ -4,7 +4,8 @@
             "id": 555351863,
             "index": 1,
             "username": "SANJARBEK1718",
-            "dek_name": "qwer"
+            "dek_name": "qwer",
+            "Sanjarbek": 1
         }
     },
     "Dek": {
@@ -18,7 +19,9 @@
     "List": {
         "1": {
             "id": 555351863,
-            "Sanjarbek": {}
+            "Sanjarbek": {
+                "user doesnt exists": 1
+            }
         }
     },
     "Anki": {
