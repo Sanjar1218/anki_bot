@@ -179,10 +179,10 @@ def search_user(name):
 
 def search_dek(id):
     '''user qaysi dekda ekanligini qaytaradi'''
-    path = dek.get(where('user_id') == id)
+    path = dek.get(where('id') == id)
 
     if path:
-        return path['deck_name']
+        return path['dek_name']
     else:
         return 'user doesnt exists'
 
@@ -239,15 +239,15 @@ def quest(question, name='Decks'):
 def ans(answer, name='Decks'):
     '''userning qaysi dekdagi nominiga qarab shunga javoblarini qo'shib ketadi'''
     # getting deck accordingly
-    ans = anki.get(where('name') == name)
+    ans = anki_ans.get(where('name') == name)
 
     try:
-        id = int(list(quest['data'].keys())[-1])
+        id = int(list(ans['data'].keys())[-1])
     except IndexError:
         id = 0
 
     ans['data'][id + 1] = answer
-    anki_ans.update(quest, where('name') == name)
+    anki_ans.update(ans, where('name') == name)
 
 
 def add_user(id: int, user_name: str) -> None:
@@ -287,9 +287,10 @@ if __name__ == '__main__':
     # start()
     # add_user(1)
     quest = anki.get(where('name') == 'qwer')
-    try:
-        id = int(list(quest['data'].keys())[-1])
-    except IndexError:
-        id = 0
-    quest['data'][id + 1] = 'bye'
-    anki.update(quest, where('name') == 'qwer')
+    print(quest)
+    # try:
+    #     id = int(list(quest['data'].keys())[-1])
+    # except IndexError:
+    #     id = 0
+    # quest['data'][id + 1] = 'bye'
+    # anki.update(quest, where('name') == 'qwer')
