@@ -243,12 +243,13 @@ def hide(update, context):
 
 def begin(update, context):
     first = update.message.chat.first_name
+    chat_id = update.message.chat.id
 
-    change_user(first, 1)
+    change_user(chat_id, 1)
     name = search_dek(first)
-    lst_up(first, name, 1)
+    # lst_up(first, name, 1)
     x = search_user(first)
-    text = deck_id_quest(x, first, name)
+    text = deck_id_quest(x, name)
 
     button = InlineKeyboardButton('Show answer', callback_data='show_answer')
     button2 = InlineKeyboardButton('Exit', callback_data='Exit')
