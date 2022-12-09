@@ -264,22 +264,23 @@ def minut(update, context):
     chat_id = update.message.chat_id
     first = update.message.chat.first_name
     data = update.data
+
     name = search_dek(first)
     l = deck_end(first, name)
     x = search_user(first)
     hour = int(data)
     lst_back(first, name)
 
-    tank = tim(dt.year, dt.month, dt.day, dt.hour, dt.minute + hour, x, name)
+    # tank = tim(dt.year, dt.month, dt.day, dt.hour, dt.minute + hour, x, name)
     timer(dt.year, dt.month, dt.day, dt.hour, dt.minute + hour, x, name)
     x += 1
     change_user(first, x)
     print(l, x)
-    if tank:
-        context.job_queue.run_once(alarm,
-                                   datetime.timedelta(minutes=hour),
-                                   context=chat_id,
-                                   name=str(first))
+    # if tank:
+    #     context.job_queue.run_once(alarm,
+    #                                datetime.timedelta(minutes=hour),
+    #                                context=chat_id,
+    #                                name=str(first))
     if l == x - 1:
         print('munit if')
         button = InlineKeyboardButton('Hide', callback_data='hide')
@@ -287,26 +288,32 @@ def minut(update, context):
         update.edit_message_text('tugadi', reply_markup=reply_markup)
     else:
         text = deck_id_quest(x, first, name)
+
         button1 = InlineKeyboardButton('Show answer',
                                        callback_data='show_answer')
         button2 = InlineKeyboardButton('Exit', callback_data='Exit')
         button = InlineKeyboardMarkup([[button1, button2]])
+
         update.edit_message_text(text, reply_markup=button)
 
 
 def show_answer(update, context):
     update = update.callback_query
-    first = update.message.chat.first_name
-    name = search_dek(first)
-    x = search_user(first)
-    quest = deck_id_quest(x, first, name)
-    ans = deck_id_ans(x, first, name)
+    chat_id = update.message.chat.id
+
+    name = search_dek(chat_id)
+    x = search_user(chat_id)
+    quest = deck_id_quest(x, name)
+    ans = deck_id_ans(x, name)
+
     minut = InlineKeyboardButton('<1m', callback_data='1')
     hour = InlineKeyboardButton('<10m', callback_data='10')
     day = InlineKeyboardButton('4d', callback_data='4')
+
     button1 = InlineKeyboardButton('Show answer', callback_data='show_answer')
     button2 = InlineKeyboardButton('Exit', callback_data='Exit')
     button = InlineKeyboardMarkup([[minut, hour, day], [button1, button2]])
+
     update.edit_message_text(f'{quest}\n-------\n{ans}', reply_markup=button)
     # <10m 4d 15d 29d
 
