@@ -206,10 +206,11 @@ def deck_id_quest(x, name='ajoyib'):
         return ds['data'][str(x)]
 
 
-def deck_id_ans(x, first_name, name='ajoyib'):
+def deck_id_ans(x, name='ajoyib'):
     '''Returns word'''
-    ds = anki_ans.get(doc_id=1)[first_name][name][str(x)]['answer']
-    return ds
+    ds = anki_ans.get(where('name') == name)
+    if ds:
+        return ds['data'][str(x)]
 
 
 def create_decks(id, deck_name, first_name):
