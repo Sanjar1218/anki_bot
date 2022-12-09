@@ -171,10 +171,12 @@ def user_decks(id):
     return lst
 
 
-def search_user(name):
+def search_user(id):
     '''userning nechinchi indexdaligini qaytaradi'''
-    path = user.get(doc_id=1)
-    return path[name]
+    path = user.get(where('id') == id)
+    if path:
+        return path['index']
+    return 'user doesnt exist'
 
 
 def search_dek(id):
@@ -199,8 +201,9 @@ def change_dek(id, d):
 
 def deck_id_quest(x, name='ajoyib'):
     '''Returns word'''
-    ds = anki.get(where('name') == name)['data'][x]
-    return ds
+    ds = anki.get(where('name') == name)
+    if ds:
+        return ds['data'][str(x)]
 
 
 def deck_id_ans(x, first_name, name='ajoyib'):
