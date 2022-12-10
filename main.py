@@ -271,6 +271,48 @@ def minut(update, context):
     hour = int(data)
     lst_back(first, name)
 
+    # time doesn't need for no more
+    # td = datetime.timedelta(minutes=1)
+    # tank = tim(dt.year, dt.month, dt.day, dt.hour, dt.minute + hour, x, name)
+    timer(chat_id, x, name)
+    x += 1
+    change_user(first, x)
+    print(l, x)
+    # if tank:
+    #     context.job_queue.run_once(alarm,
+    #                                datetime.timedelta(minutes=hour),
+    #                                context=chat_id,
+    #                                name=str(first))
+    if l == x - 1:
+        print('munit if')
+        button = InlineKeyboardButton('Hide', callback_data='hide')
+        reply_markup = InlineKeyboardMarkup([[button]])
+        update.edit_message_text('tugadi', reply_markup=reply_markup)
+    else:
+        text = deck_id_quest(x, first, name)
+
+        button1 = InlineKeyboardButton('Show answer',
+                                       callback_data='show_answer')
+        button2 = InlineKeyboardButton('Exit', callback_data='Exit')
+        button = InlineKeyboardMarkup([[button1, button2]])
+
+        update.edit_message_text(text, reply_markup=button)
+
+
+def minuts(update, context):
+    """Add a job to the queue."""
+    dt = datetime.datetime.today()
+    update = update.callback_query
+    chat_id = update.message.chat_id
+    first = update.message.chat.first_name
+    data = update.data
+
+    name = search_dek(first)
+    l = deck_end(first, name)
+    x = search_user(first)
+    hour = int(data)
+    lst_back(first, name)
+
     # tank = tim(dt.year, dt.month, dt.day, dt.hour, dt.minute + hour, x, name)
     timer(dt.year, dt.month, dt.day, dt.hour, dt.minute + hour, x, name)
     x += 1
@@ -306,9 +348,9 @@ def show_answer(update, context):
     quest = deck_id_quest(x, name)
     ans = deck_id_ans(x, name)
 
-    minut = InlineKeyboardButton('<1m', callback_data='1')
-    hour = InlineKeyboardButton('<10m', callback_data='10')
-    day = InlineKeyboardButton('4d', callback_data='4')
+    minut = InlineKeyboardButton('<1m', callback_data='temp')
+    hour = InlineKeyboardButton('<10m', callback_data='box')
+    day = InlineKeyboardButton('4d', callback_data='long')
 
     button1 = InlineKeyboardButton('Show answer', callback_data='show_answer')
     button2 = InlineKeyboardButton('Exit', callback_data='Exit')
@@ -416,8 +458,9 @@ def cancel(update, context):
 updater = Updater(token='5297954693:AAGmz8OqL9EBPsfJ4S_R9AqgOtV67vkNtY4')
 updater.dispatcher.add_handler(CommandHandler('start', start))
 updater.dispatcher.add_handler(CallbackQueryHandler(hide, pattern='hide'))
-updater.dispatcher.add_handler(CallbackQueryHandler(minut, pattern='1'))
-updater.dispatcher.add_handler(CallbackQueryHandler(day, pattern='4'))
+updater.dispatcher.add_handler(CallbackQueryHandler(minut, pattern='temp'))
+updater.dispatcher.add_handler(CallbackQueryHandler(minuts, pattern='box'))
+updater.dispatcher.add_handler(CallbackQueryHandler(day, pattern='long'))
 updater.dispatcher.add_handler(
     CallbackQueryHandler(show_alarm_answer, pattern='show_answer_time'))
 updater.dispatcher.add_handler(CallbackQueryHandler(alarm_minut, pattern='a1'))

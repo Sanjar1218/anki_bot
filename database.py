@@ -131,14 +131,15 @@ def tim(year, month, day, hour, minute, deck_id, deck_name):
         return False
 
 
-def timer(year, month, day, hour, minute, deck_id, deck_name):
+def timer(id, deck_id, deck_name):
     '''vaqti kelganda qaysi dek nomi va index larini kiritib  boradi'''
-    path = time.get(doc_id=1)
-    vaqt = str(year) + '-' + str(month) + '-' + str(day) + ' ' + str(
-        hour) + ':' + str(minute)
-    if vaqt not in path:
-        path[vaqt] = []
-    path[vaqt + 'deck'] = deck_name
+    vaqt = time.timestamp()
+    path = time.get(where('user_id') == id)
+    if path:
+        path[deck_name] = deck_id
+
+    # if vaqt not in path:
+    #     path[vaqt] = []
     lst = path[vaqt]
     lst.append(deck_id)
     time.update(path)
