@@ -114,10 +114,13 @@ def lst_back(name, deck_name):
     return path
 
 
-def deck_end(first_name, deck_name):
+def deck_end(id, deck_name):
     '''ankida nechta so'z borligini qaytaradi'''
-    path = anki.get(doc_id=1)[first_name][deck_name]
-    return len(path)
+    path = anki.get((where('user_id') == id) & (where('name') == deck_name))
+    if path:
+        return len(path)
+    else:
+        raise Exception(f"user_id {id} or deck_name {deck_name} doesnt exists")
 
 
 def tim(year, month, day, hour, minute, deck_id, deck_name):
@@ -133,16 +136,13 @@ def tim(year, month, day, hour, minute, deck_id, deck_name):
 
 def timer(id, deck_id, deck_name):
     '''vaqti kelganda qaysi dek nomi va index larini kiritib  boradi'''
-    vaqt = time.timestamp()
+
     path = time.get(where('user_id') == id)
     if path:
-        path[deck_name] = deck_id
-
-    # if vaqt not in path:
-    #     path[vaqt] = []
-    lst = path[vaqt]
-    lst.append(deck_id)
-    time.update(path)
+        path[deck_name]['temp'].append(deck_id)
+        time.update(path, where('user_id') == id)
+    else:
+        print('user has not time table')
 
 
 def times_up(year, month, day, hour, minute):
@@ -177,27 +177,27 @@ def search_user(id):
     path = user.get(where('id') == id)
     if path:
         return path['index']
-    return 'user doesnt exist'
+    raise Exception(f'user {id} doesnt exist')
 
 
 def search_dek(id):
     '''user qaysi dekda ekanligini qaytaradi'''
-    path = dek.get(where('id') == id)
+    path = user.get(where('id') == id)
 
     if path:
         return path['dek_name']
     else:
-        return 'user doesnt exists'
+        raise Exception(f'user {id} doesnt exists')
 
 
 def change_dek(id, d):
     '''User qaysi dekga kirganini saqlab qoladi'''
-    path = dek.get(where('id') == id)
+    path = user.get(where('id') == id)
     if path:
         path['dek_name'] = d
         dek.update(path, where('id') == id)
     else:
-        return 'id doenst exists'
+        raise Exception(f'id {id} doenst exists')
 
 
 def deck_id_quest(x, name='ajoyib'):

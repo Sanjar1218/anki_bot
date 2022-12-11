@@ -259,24 +259,19 @@ def begin(update, context):
 
 def minut(update, context):
     """Add a job to the queue."""
-    dt = datetime.datetime.today()
     update = update.callback_query
     chat_id = update.message.chat_id
-    first = update.message.chat.first_name
-    data = update.data
 
-    name = search_dek(first)
-    l = deck_end(first, name)
-    x = search_user(first)
-    hour = int(data)
-    lst_back(first, name)
+    name = search_dek(chat_id)
+    l = deck_end(chat_id, name)
+    x = search_user(chat_id)
 
-    # time doesn't need for no more
-    # td = datetime.timedelta(minutes=1)
-    # tank = tim(dt.year, dt.month, dt.day, dt.hour, dt.minute + hour, x, name)
+    # i dont know what is for this function
+    # lst_back(first, name)
+
     timer(chat_id, x, name)
     x += 1
-    change_user(first, x)
+    change_user(chat_id, x)
     print(l, x)
     # if tank:
     #     context.job_queue.run_once(alarm,
@@ -289,7 +284,7 @@ def minut(update, context):
         reply_markup = InlineKeyboardMarkup([[button]])
         update.edit_message_text('tugadi', reply_markup=reply_markup)
     else:
-        text = deck_id_quest(x, first, name)
+        text = deck_id_quest(x, name)
 
         button1 = InlineKeyboardButton('Show answer',
                                        callback_data='show_answer')
