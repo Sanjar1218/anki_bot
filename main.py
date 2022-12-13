@@ -76,12 +76,11 @@ def my_decks(update, context):
 
 
 def choose_deck(update, context):
-    first = update.message.chat.first_name
     bot = context.bot
     chat_id = update.message.chat.id
     text = update.message.text
 
-    print(change_dek(chat_id, text))
+    change_dek(chat_id, text)
 
     button = ReplyKeyboardMarkup([['Read', 'Add to deck'], ['Exit']],
                                  resize_keyboard=True)
@@ -99,14 +98,13 @@ def create_deck(update, context):
 
 
 def deck_name(update, context):
-    first = update.message.chat.first_name
     bot = context.bot
     chat_id = update.message.chat.id
     text = update.message.text
 
     change_dek(chat_id, text)
-    lst_add(chat_id, first)
-    create_decks(chat_id, text, first)
+    # lst_add(chat_id, first)
+    create_decks(chat_id, text)
 
     if text == 'Close':
         button = ReplyKeyboardMarkup([['Create deck', 'My Decks']],
@@ -121,10 +119,13 @@ def deck_name(update, context):
 def my_deck(update, context):
     bot = context.bot
     chat_id = update.message.chat.id
+
     minut = InlineKeyboardButton('<1m', callback_data='1')
     hour = InlineKeyboardButton('<10m', callback_data='10')
     day = InlineKeyboardButton('4d', callback_data='4')
+
     button = InlineKeyboardMarkup([[minut, hour, day]])
+
     bot.sendMessage(chat_id, 'laguages', reply_markup=button)
 
 
@@ -272,12 +273,11 @@ def minut(update, context):
     timer(chat_id, x, name)
     x += 1
     change_user(chat_id, x)
-    print(l, x)
-    # if tank:
-    #     context.job_queue.run_once(alarm,
-    #                                datetime.timedelta(minutes=hour),
-    #                                context=chat_id,
-    #                                name=str(first))
+    # print(l, x)
+    context.job_queue.run_once(alarm,
+                               datetime.timedelta(minutes=1),
+                               context=chat_id,
+                               name='temp')
     if l == x - 1:
         print('munit if')
         button = InlineKeyboardButton('Hide', callback_data='hide')

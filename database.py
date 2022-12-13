@@ -14,13 +14,13 @@ query = Query()
 
 
 def start():
-    anki.insert({})
-    anki_ans.insert({})
-    user.insert({})
-    dek.insert({})
+    # anki.insert({})
+    # anki_ans.insert({})
+    # user.insert({})
+    # dek.insert({})
     time.insert({})
-    lst_table.insert({})
-    nom.insert({})
+    # lst_table.insert({})
+    # nom.insert({})
 
 
 def lst_add(id, name):
@@ -139,10 +139,13 @@ def timer(id, deck_id, deck_name):
 
     path = time.get(where('user_id') == id)
     if path:
-        path[deck_name]['temp'].append(deck_id)
+        try:
+            path[deck_name]['temp'].append(deck_id)
+        except KeyError:
+            path[deck_name] = {'temp': [deck_id], 'box': [], 'day': []}
         time.update(path, where('user_id') == id)
     else:
-        print('user has not time table')
+        time.insert({'user_id': id, deck_name: {'temp': [deck_id]}})
 
 
 def times_up(year, month, day, hour, minute):
@@ -195,7 +198,7 @@ def change_dek(id, d):
     path = user.get(where('id') == id)
     if path:
         path['dek_name'] = d
-        dek.update(path, where('id') == id)
+        user.update(path, where('id') == id)
     else:
         raise Exception(f'id {id} doenst exists')
 
@@ -205,6 +208,8 @@ def deck_id_quest(x, name='ajoyib'):
     ds = anki.get(where('name') == name)
     if ds:
         return ds['data'][str(x)]
+    else:
+        raise Exception(f'deck {name} doesnt exists')
 
 
 def deck_id_ans(x, name='ajoyib'):
@@ -212,16 +217,19 @@ def deck_id_ans(x, name='ajoyib'):
     ds = anki_ans.get(where('name') == name)
     if ds:
         return ds['data'][str(x)]
+    else:
+        raise Exception(f'deck {name} doesnt exists')
 
 
-def create_decks(id, deck_name, first_name):
+def create_decks(id, deck_name):
     '''yangi dek document qo'shadi va agar shu nomli dek bo'lsa qo'shmay false qaytardi '''
 
     question = anki.get(where('name') == deck_name)
     answer = anki_ans.get(where('name') == deck_name)
 
     if question and answer:
-        return False
+        raise Exception(
+            f'question {question} or answer {answer} does not exists')
     else:
         anki.insert({'name': deck_name, 'user_id': id, 'data': {}})
         anki_ans.insert({'name': deck_name, 'user_id': id, 'data': {}})

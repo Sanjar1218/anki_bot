@@ -2,7 +2,7 @@
     "user": {
         "1": {
             "id": 555351863,
-            "index": 4,
+            "index": 2,
             "username": "SANJARBEK1718",
             "dek_name": "qwer",
             "Sanjarbek": 1
@@ -64,6 +64,20 @@
                 "2": "yaxshi",
                 "3": "fdsa",
                 "4": "/bekor"
+            }
+        }
+    },
+    "Time": {
+        "1": {
+            "user_id": 555351863,
+            "qwer": {
+                "temp": [
+                    1,
+                    1,
+                    2,
+                    3,
+                    1
+                ]
             }
         }
     }
