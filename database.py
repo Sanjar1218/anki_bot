@@ -142,19 +142,20 @@ def timer(id, deck_id, deck_name):
         try:
             path[deck_name]['temp'].append(deck_id)
         except KeyError:
-            path[deck_name] = {'temp': [deck_id], 'box': [], 'day': []}
+            path[deck_name] = {'temp': [deck_id], 'box': [], 'long': []}
         time.update(path, where('user_id') == id)
     else:
         time.insert({'user_id': id, deck_name: {'temp': [deck_id]}})
 
 
-def times_up(year, month, day, hour, minute):
+def times_up(id, deck_name, box):
     '''Vaqt tuganda shu qaysi dek nomi indexlari qaytaradi'''
-    vaqt = str(year) + '-' + str(month) + '-' + str(day) + ' ' + str(
-        hour) + ':' + str(minute)
-    deck_id = time.get(doc_id=1)[vaqt]
-    deck_name = time.get(doc_id=1)[vaqt + 'deck']
-    return deck_id, deck_name
+    user_deck = time.get(where('user_id') == id)
+    if user_deck:
+        deck_id = user_deck.get(deck_name).get(box)
+    else:
+        raise Exception(f'user {id} doenst exists')
+    return deck_id
 
 
 def pop_time(year, month, day, hour, minute):

@@ -129,42 +129,6 @@ def my_deck(update, context):
     bot.sendMessage(chat_id, 'laguages', reply_markup=button)
 
 
-def alarm(context):
-    """Send the alarm message."""
-    print('tugadi')
-    dt = datetime.datetime.today()
-    job = context.job
-    first = job.name
-    x = search_user(first)
-
-    lst, deck_name = times_up(dt.year, dt.month, dt.day, dt.hour, dt.minute)
-    # userning nechida qolib ketganini saqlab qoladi listning oxirida
-    timer(dt.year, dt.month, dt.day, dt.hour, dt.minute, x, deck_name)
-
-    # shu vaqtning ichidad nima borligini va qaysi deck nomini qaytaradi
-    lst, deck_name = times_up(dt.year, dt.month, dt.day, dt.hour, dt.minute)
-    # userning ismiga bog'lab lst ni saqlab qoladi
-    lst_up(first, deck_name, lst)
-
-    change_dek(first, deck_name)
-    change_user(first, 0)
-    name = search_dek(first)
-    # agar lst bo'lsa ishlaydi bo'lmasa except ga o'tib ketadi
-
-    x = search_user(first)
-    #change_user(first, x+1)
-    print('alarmdagi', lst)
-    text = deck_id_quest(lst[x], first, name)
-    # except:
-    #     x = search_user(first)
-    #     text = deck_id_quest(x, name)
-    button1 = InlineKeyboardButton('Show answer',
-                                   callback_data='show_answer_time')
-    button2 = InlineKeyboardButton('Exit', callback_data='Exit')
-    button = InlineKeyboardMarkup([[button1, button2]])
-    context.bot.sendMessage(job.context, text=text, reply_markup=button)
-
-
 def alarm_minut(update, context):
     """Add a job to the queue."""
     print('minut')
@@ -258,6 +222,44 @@ def begin(update, context):
     update.message.reply_text(text, reply_markup=reply_markup)
 
 
+def alarm(context):
+    """Send the alarm message."""
+    job = context.job
+    data = job.context
+    name = job.name
+
+    chat_id = data.get('chat_id', 123)
+    deck_name = data.get('deck_name', 'ajoyib')
+
+    # x = search_user(chat_id)
+    lst, deck_name = times_up(chat_id, deck_name, name)
+    # userning nechida qolib ketganini saqlab qoladi listning oxirida
+    timer(chat_id, x, deck_name)
+
+    # shu vaqtning ichida nima borligini va qaysi deck nomini qaytaradi
+    lst, deck_name = times_up()
+    # userning ismiga bog'lab lst ni saqlab qoladi
+    # lst_up(first, deck_name, lst)
+
+    change_dek(chat_id, deck_name)
+    change_user(chat_id, 0)
+    deck_name = search_dek(chat_id)
+    # agar lst bo'lsa ishlaydi bo'lmasa except ga o'tib ketadi
+
+    x = search_user(chat_id)
+    #change_user(first, x+1)
+    print('alarmdagi', lst)
+    text = deck_id_quest(lst[x], deck_name)
+    # except:
+    #     x = search_user(first)
+    #     text = deck_id_quest(x, name)
+    button1 = InlineKeyboardButton('Show answer',
+                                   callback_data='show_answer_time')
+    button2 = InlineKeyboardButton('Exit', callback_data='Exit')
+    button = InlineKeyboardMarkup([[button1, button2]])
+    context.bot.sendMessage(job.context, text=text, reply_markup=button)
+
+
 def minut(update, context):
     """Add a job to the queue."""
     update = update.callback_query
@@ -275,8 +277,11 @@ def minut(update, context):
     change_user(chat_id, x)
     # print(l, x)
     context.job_queue.run_once(alarm,
-                               datetime.timedelta(minutes=1),
-                               context=chat_id,
+                               datetime.timedelta(seconds=3),
+                               context={
+                                   'deck_name': name,
+                                   'chat_id': chat_id
+                               },
                                name='temp')
     if l == x - 1:
         print('munit if')
