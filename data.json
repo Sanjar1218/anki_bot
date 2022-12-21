@@ -3,8 +3,10 @@
         "1": {
             "id": 555351863,
             "index": 0,
+            "previous_index": 1,
             "username": "SANJARBEK1718",
-            "dek_name": "qwer",
+            "current_dek_name": "qwer",
+            "previous_dek_name": "qwer",
             "Sanjarbek": 1
         },
         "2": {
@@ -59,6 +61,8 @@
             "qwer": {
                 "temp": [
                     1,
+                    1,
+                    2,
                     1,
                     2,
                     1,
