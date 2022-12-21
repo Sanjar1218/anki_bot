@@ -278,7 +278,14 @@ def add_user(id: int, user_name: str) -> None:
         d['index'] = 1
         # path['index'] = 1
     else:
-        d = {'id': id, 'index': 1, 'temp': [], 'long': [], 'box': []}
+        d = {
+            'id': id,
+            'index': 1,
+            'previous_index': 1,
+            'temp': [],
+            'long': [],
+            'box': [],
+        }
         # path = {'id': id, 'index': 1, 'username': user_name}
         # user.insert(path)
         user.insert(d)
