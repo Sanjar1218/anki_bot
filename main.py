@@ -133,40 +133,43 @@ def alarm_minut(update, context):
     """Add a job to the queue."""
     print('minut')
     hour = 1
-    dt = datetime.datetime.today()
+
     update = update.callback_query
     chat_id = update.message.chat_id
-    first = update.message.chat.first_name
     data = update.data
+
     print(data)
-    name = search_dek(first)
-    l = deck_end(first, name)
-    x = search_user(first)
+
+    deck_name = search_dek(chat_id)
+    l = deck_end(chat_id, deck_name)
+    x = search_user(chat_id)
+
     if data == 'a1':
         hour = 1
     elif data == 'a10':
         hour = 10
-    lst = lst_back(first, name)
-    tank = tim(dt.year, dt.month, dt.day, dt.hour, dt.minute + hour, lst[x],
-               name)
-    timer(dt.year, dt.month, dt.day, dt.hour, dt.minute + hour, lst[x], name)
+
+    lst = lst_back(chat_id, deck_name)
+    timer(chat_id, x, deck_name)
     print(l, x)
     x += 1
-    change_user(first, x)
+    change_user(chat_id, x)
 
-    if tank:
-        context.job_queue.run_once(alarm,
-                                   datetime.timedelta(minutes=hour),
-                                   context=chat_id,
-                                   name=str(first))
+    context.job_queue.run_once(alarm,
+                               datetime.timedelta(minutes=hour),
+                               context={
+                                   'deck_name': deck_name,
+                                   'chat_id': chat_id
+                               },
+                               name='temp')
     if len(lst) == x + 1:
         print('munit if')
-        change_user(first, lst[x])
+        change_user(chat_id, lst[x])
         button = InlineKeyboardButton('Hide', callback_data='hide')
         reply_markup = InlineKeyboardMarkup([[button]])
         update.edit_message_text('tugadi', reply_markup=reply_markup)
     else:
-        text = deck_id_quest(lst[x], first, name)
+        text = deck_id_quest(lst[x], deck_name)
         button1 = InlineKeyboardButton('Show answer',
                                        callback_data='show_answer_time')
         button2 = InlineKeyboardButton('Exit', callback_data='Exit')
@@ -176,17 +179,18 @@ def alarm_minut(update, context):
 
 def show_alarm_answer(update, context):
     update = update.callback_query
-    first = update.message.chat.first_name
+    first = update.message.chat.id
+
     name = search_dek(first)
     x = search_user(first)
 
     # anki tabledagi so'zlar sonini qaytaradi
     # d = deck_end(name)
     # lst_tabledagi listni qaytaradi
-    lst = lst_back(first, name)
+    # lst = lst_back(first, name)
 
-    quest = deck_id_quest(lst[x], first, name)
-    ans = deck_id_ans(lst[x], first, name)
+    quest = deck_id_quest(x, name)
+    ans = deck_id_ans(x, name)
 
     minut = InlineKeyboardButton('<1m', callback_data='a1')
     hour = InlineKeyboardButton('<10m', callback_data='a10')
@@ -231,13 +235,13 @@ def alarm(context):
     chat_id = data.get('chat_id', 123)
     deck_name = data.get('deck_name', 'ajoyib')
 
-    # x = search_user(chat_id)
-    lst, deck_name = times_up(chat_id, deck_name, name)
+    x = search_user(chat_id)
+    lst_id = times_up(chat_id, deck_name, name)
     # userning nechida qolib ketganini saqlab qoladi listning oxirida
     timer(chat_id, x, deck_name)
 
     # shu vaqtning ichida nima borligini va qaysi deck nomini qaytaradi
-    lst, deck_name = times_up()
+    # lst_id, deck_name = times_up()
     # userning ismiga bog'lab lst ni saqlab qoladi
     # lst_up(first, deck_name, lst)
 
@@ -248,8 +252,8 @@ def alarm(context):
 
     x = search_user(chat_id)
     #change_user(first, x+1)
-    print('alarmdagi', lst)
-    text = deck_id_quest(lst[x], deck_name)
+    print('alarmdagi', lst_id)
+    text = deck_id_quest(lst_id[x], deck_name)
     # except:
     #     x = search_user(first)
     #     text = deck_id_quest(x, name)
@@ -257,7 +261,7 @@ def alarm(context):
                                    callback_data='show_answer_time')
     button2 = InlineKeyboardButton('Exit', callback_data='Exit')
     button = InlineKeyboardMarkup([[button1, button2]])
-    context.bot.sendMessage(job.context, text=text, reply_markup=button)
+    context.bot.sendMessage(chat_id, text=text, reply_markup=button)
 
 
 def minut(update, context):

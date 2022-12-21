@@ -108,10 +108,14 @@ def lst_up(name, deck_name, lst):
     lst_table.update(nm)
 
 
-def lst_back(name, deck_name):
+def lst_back(id, deck_name, box='temp'):
     '''qaysi index lari qaytarilishi kerak bo'lgani list qilib qaytaradi'''
-    path = lst_table.get(doc_id=1)[name][deck_name]
-    return path
+    path = time.get(where('user_id') == id)
+
+    if path:
+        return path[deck_name][box]
+    else:
+        raise Exception(f'user {id} doesnt exists')
 
 
 def deck_end(id, deck_name):
@@ -267,27 +271,19 @@ def ans(answer, name='Decks'):
 def add_user(id: int, user_name: str) -> None:
     '''yangi user qo'shadi agar oldindan bo'lsa olindigi qolib ketgan historyni yangilaydi'''
 
-    d = user.get(query.id == id)
-    path = dek.get(query.id == id)
+    d = user.get(where('id') == id)
+    # path = dek.get(query.id == id)
 
-    # def your_operation(your_arguments):
-
-    #     def transform(doc):
-    #         print(doc)
-    #         return transform
-
-    # user.update(your_operation('index'), query.id == id)
-    # dek.update(your_operation('index'), query.id == id)
-    if d and path:
+    if d:
         d['index'] = 1
-        path['index'] = 1
+        # path['index'] = 1
     else:
-        d = {'id': id, 'index': 1}
-        path = {'id': id, 'index': 1, 'username': user_name}
-        user.insert(path)
-        dek.insert(d)
-    user.update(path, where('id') == id)
-    dek.update(d, where('id') == id)
+        d = {'id': id, 'index': 1, 'temp': [], 'long': [], 'box': []}
+        # path = {'id': id, 'index': 1, 'username': user_name}
+        # user.insert(path)
+        user.insert(d)
+    # user.update(path, where('id') == id)
+    user.update(d, where('id') == id)
 
 
 def change_user(id, index):

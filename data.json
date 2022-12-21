@@ -2,23 +2,9 @@
     "user": {
         "1": {
             "id": 555351863,
-            "index": 2,
+            "index": 0,
             "username": "SANJARBEK1718",
             "dek_name": "qwer",
-            "Sanjarbek": 1
-        },
-        "2": {
-            "id": 1548687330,
-            "index": 1,
-            "username": "flutter_developer06"
-        }
-    },
-    "Dek": {
-        "1": {
-            "id": 555351863,
-            "index": 1,
-            "dek_name": "qwer",
-            "username": "SANJARBEK1718",
             "Sanjarbek": 1
         },
         "2": {
@@ -75,12 +61,15 @@
                     1,
                     1,
                     2,
-                    3,
                     1,
+                    2,
                     1,
-                    1
+                    2,
+                    1,
+                    2
                 ]
             }
         }
-    }
+    },
+    "Dek": {}
 }
